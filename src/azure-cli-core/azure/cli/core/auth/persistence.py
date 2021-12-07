@@ -42,6 +42,8 @@ def build_persistence(location, encrypt):
         if sys.platform.startswith('win'):
             return FilePersistenceWithDataProtection(location)
         if sys.platform.startswith('darwin'):
+            logger.debug("Initializing KeychainPersistence: signal_location=%r, service_name=%r",
+                         location, KEYCHAIN_SERVICE_NAME)
             return KeychainPersistence(location, service_name=KEYCHAIN_SERVICE_NAME)
         if sys.platform.startswith('linux'):
             return LibsecretPersistence(
