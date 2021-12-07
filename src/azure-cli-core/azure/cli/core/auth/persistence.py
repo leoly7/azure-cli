@@ -21,6 +21,8 @@ logger = get_logger(__name__)
 # Files extensions for encrypted and plaintext persistence
 file_extensions = {True: '.bin', False: '.json'}
 
+KEYCHAIN_SERVICE_NAME = 'azure-cli'
+
 
 def load_persisted_token_cache(location, encrypt):
     persistence = build_persistence(location, encrypt)
@@ -40,7 +42,7 @@ def build_persistence(location, encrypt):
         if sys.platform.startswith('win'):
             return FilePersistenceWithDataProtection(location)
         if sys.platform.startswith('darwin'):
-            return KeychainPersistence(location, "my_service_name", "my_account_name")
+            return KeychainPersistence(location, service_name=KEYCHAIN_SERVICE_NAME)
         if sys.platform.startswith('linux'):
             return LibsecretPersistence(
                 location,
